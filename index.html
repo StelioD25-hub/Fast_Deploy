@@ -86,6 +86,10 @@
             justify-content: center;
         }
         .modal-backdrop.active { display: flex; }
+        
+        /* Mobile Menu Transitions */
+        #mobile-menu { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        #mobile-menu.active { transform: translateX(0); }
     </style>
 </head>
 <body class="font-sans antialiased">
@@ -113,21 +117,54 @@
     </div>
 
     <!-- Header -->
-    <nav class="fixed w-full z-50 py-6 px-6 md:px-12 flex justify-between items-center glass">
+    <nav class="fixed w-full z-50 py-4 md:py-6 px-4 md:px-12 flex justify-between items-center glass">
         <div class="flex items-center gap-2 cursor-pointer" onclick="showPage('home')">
-            <div class="w-3 h-3 bg-dev-neon rounded-full animate-pulse"></div>
-            <span class="font-mono font-bold tracking-tighter text-xl text-white">FAST_DEPLOY</span>
+            <div class="w-2.5 h-2.5 bg-dev-neon rounded-full animate-pulse"></div>
+            <span class="font-mono font-bold tracking-tighter text-lg md:text-xl text-white">FAST_DEPLOY</span>
         </div>
-        <div class="hidden md:flex gap-8 items-center text-sm font-medium tracking-wide">
-            <a href="javascript:void(0)" onclick="showPage('home')" class="hover:text-dev-accent transition-colors" data-i18n="navHome">HOME</a>
-            <a href="javascript:void(0)" onclick="showPage('services')" class="hover:text-dev-accent transition-colors" data-i18n="navServices">SERVICES</a>
-            <button id="lang-toggle" class="flex items-center gap-2 bg-white/5 px-3 py-1 rounded-full border border-white/10 hover:bg-white/10 transition-all text-[10px] font-mono">
+
+        <div class="flex items-center gap-3 md:gap-8">
+            <!-- Language Toggle (Visible on BOTH Mobile and Desktop) -->
+            <button id="lang-toggle" class="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-full border border-white/10 hover:bg-white/10 transition-all text-[10px] font-mono whitespace-nowrap">
                 <span id="lang-text">PT-BR</span>
-                <i data-lucide="languages" class="w-3 h-3"></i>
+                <i data-lucide="languages" class="w-3.5 h-3.5"></i>
             </button>
-            <a href="#contact" class="px-5 py-2 bg-white text-black rounded-full hover:bg-dev-accent hover:text-white transition-all" data-i18n="navHire">HIRE ME</a>
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex gap-8 items-center text-sm font-medium tracking-wide">
+                <a href="javascript:void(0)" onclick="showPage('home')" class="hover:text-dev-accent transition-colors" data-i18n="navHome">HOME</a>
+                <a href="javascript:void(0)" onclick="showPage('services')" class="hover:text-dev-accent transition-colors" data-i18n="navServices">SERVICES</a>
+                <a href="#contact" class="px-5 py-2 bg-white text-black rounded-full hover:bg-dev-accent hover:text-white transition-all font-bold" data-i18n="navHire">HIRE ME</a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button id="mobile-menu-btn" class="flex md:hidden p-2 text-white bg-white/5 rounded-lg border border-white/10">
+                <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
         </div>
     </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="fixed inset-y-0 right-0 w-[80%] max-w-sm bg-dev-black z-[100] border-l border-white/10 p-10 flex flex-col gap-10 lg:hidden shadow-2xl">
+        <button id="mobile-menu-close" class="self-end p-2 text-gray-400 hover:text-white">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        
+        <div class="flex flex-col gap-8 text-2xl font-bold tracking-tighter uppercase italic">
+            <a href="javascript:void(0)" onclick="toggleMobileMenu(); showPage('home');" class="hover:text-dev-accent" data-i18n="navHome">HOME</a>
+            <a href="javascript:void(0)" onclick="toggleMobileMenu(); showPage('services');" class="hover:text-dev-accent" data-i18n="navServices">SERVICES</a>
+            <a href="#projects" onclick="toggleMobileMenu();" class="hover:text-dev-accent" data-i18n="navProjects">PROJECTS</a>
+            <a href="#contact" onclick="toggleMobileMenu();" class="text-dev-accent" data-i18n="navHire">HIRE ME</a>
+        </div>
+
+        <div class="mt-auto pt-10 border-t border-white/5">
+            <p class="text-xs font-mono text-gray-500 mb-4 tracking-widest uppercase" data-i18n="freeConsultLabel">Get in touch</p>
+            <div class="flex gap-6">
+                <a href="https://wa.me/905338624614"><i data-lucide="message-circle" class="w-6 h-6 text-dev-neon"></i></a>
+                <a href="https://www.linkedin.com/in/stelio-david-jr-524486356/"><i data-lucide="linkedin" class="w-6 h-6 text-dev-purple"></i></a>
+            </div>
+        </div>
+    </div>
 
     <!-- HOME PAGE VIEW -->
     <main id="home-view" class="page-view active">
@@ -139,13 +176,13 @@
                 <div class="inline-block px-4 py-1 border border-dev-neon/30 rounded-full mb-6 bg-dev-neon/5">
                     <span class="text-dev-neon font-mono text-xs uppercase tracking-widest" data-i18n="heroStatus">Available for new projects</span>
                 </div>
-                <h1 class="text-5xl md:text-8xl font-extrabold mb-8 tracking-tighter leading-[0.9] text-white">
+                <h1 class="text-4xl md:text-8xl font-extrabold mb-8 tracking-tighter leading-[1] md:leading-[0.9] text-white">
                     <span data-i18n="heroTitlePart1">I build digital</span> <br> <span class="code-gradient" data-i18n="heroTitlePart2">experiences</span> <span data-i18n="heroTitlePart3">at speed.</span>
                 </h1>
-                <p class="max-w-2xl mx-auto text-gray-400 text-lg md:text-xl mb-12 font-light leading-relaxed" data-i18n="heroSubtext">
+                <p class="max-w-2xl mx-auto text-gray-400 text-base md:text-xl mb-12 font-light leading-relaxed px-4" data-i18n="heroSubtext">
                     Full-stack developer specializing in high-performance web applications, rapid deployment, and pixel-perfect UI.
                 </p>
-                <div class="flex flex-col md:flex-row justify-center gap-6">
+                <div class="flex flex-col md:flex-row justify-center gap-4 md:gap-6 px-6">
                     <a href="javascript:void(0)" onclick="showPage('services')" class="px-8 py-4 bg-dev-accent text-white font-bold rounded-xl flex items-center justify-center gap-2 hover:shadow-[0_0_30px_-5px_#3b82f6] transition-all">
                         <span data-i18n="heroCta1">Get your site started</span> <i data-lucide="zap" class="w-5 h-5"></i>
                     </a>
@@ -159,13 +196,13 @@
         <!-- Why Choose Me Section -->
         <section class="py-24 bg-dev-black">
             <div class="container mx-auto px-6">
-                <div class="bg-dev-card border border-white/5 rounded-[40px] p-8 md:p-16 relative overflow-hidden">
+                <div class="bg-dev-card border border-white/5 rounded-[30px] md:rounded-[40px] p-6 md:p-16 relative overflow-hidden">
                     <div class="absolute top-0 right-0 w-64 h-64 bg-dev-neon/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
                     
                     <div class="max-w-4xl mx-auto">
                         <div class="text-center mb-12">
                             <h2 class="text-xs font-mono text-dev-neon tracking-[0.3em] uppercase mb-4" data-i18n="whyTitle">Why Choose Me?</h2>
-                            <h3 class="text-4xl md:text-5xl font-bold text-white mb-4" data-i18n="whyHeading">Real results for your business.</h3>
+                            <h3 class="text-3xl md:text-5xl font-bold text-white mb-4" data-i18n="whyHeading">Real results for your business.</h3>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -174,19 +211,13 @@
                                     <div class="w-10 h-10 rounded-full bg-dev-neon/20 flex items-center justify-center shrink-0">
                                         <i data-lucide="scissors" class="w-5 h-5 text-dev-neon"></i>
                                     </div>
-                                    <span class="text-lg text-gray-300" data-i18n="why1">I understand small business owners and how it is hard to step into the digital world</span>
+                                    <span class="text-base md:text-lg text-gray-300" data-i18n="why1">I understand small business owners and how it is hard to step into the digital world</span>
                                 </li>
                                 <li class="flex items-center gap-4">
                                     <div class="w-10 h-10 rounded-full bg-dev-neon/20 flex items-center justify-center shrink-0">
                                         <i data-lucide="phone" class="w-5 h-5 text-dev-neon"></i>
                                     </div>
-                                    <span class="text-lg text-gray-300" data-i18n="why2">WhatsApp workflow (90% of clients use it)</span>
-                                </li>
-                                <li class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-full bg-dev-neon/20 flex items-center justify-center shrink-0">
-                                        <i data-lucide="trending-up" class="w-5 h-5 text-dev-neon"></i>
-                                    </div>
-                                    <span class="text-lg text-gray-300" data-i18n="why3">Fair price for your local market</span>
+                                    <span class="text-base md:text-lg text-gray-300" data-i18n="why2">WhatsApp workflow (90% of clients use it)</span>
                                 </li>
                             </ul>
                             <ul class="space-y-6">
@@ -194,13 +225,7 @@
                                     <div class="w-10 h-10 rounded-full bg-dev-neon/20 flex items-center justify-center shrink-0">
                                         <i data-lucide="clock" class="w-5 h-5 text-dev-neon"></i>
                                     </div>
-                                    <span class="text-lg text-gray-300" data-i18n="why4">Site ready in 7 days</span>
-                                </li>
-                                <li class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded-full bg-dev-neon/20 flex items-center justify-center shrink-0">
-                                        <i data-lucide="heart-handshake" class="w-5 h-5 text-dev-neon"></i>
-                                    </div>
-                                    <span class="text-lg text-gray-300" data-i18n="why5">Continuous support (I won't disappear!)</span>
+                                    <span class="text-base md:text-lg text-gray-300" data-i18n="why4">Site ready in 7 days</span>
                                 </li>
                                 <li class="flex items-center gap-4">
                                     <div class="w-10 h-10 rounded-full bg-dev-accent/20 flex items-center justify-center shrink-0">
@@ -208,7 +233,7 @@
                                     </div>
                                     <div class="flex items-baseline gap-2">
                                         <span class="text-2xl font-bold text-dev-accent">5+</span>
-                                        <span class="text-lg text-gray-300 uppercase font-mono text-sm tracking-tighter" data-i18n="websitesLive">Websites Live</span>
+                                        <span class="text-base text-gray-300 uppercase font-mono text-sm tracking-tighter" data-i18n="websitesLive">Websites Live</span>
                                     </div>
                                 </li>
                             </ul>
@@ -220,12 +245,11 @@
 
         <!-- Projects Ticker -->
         <section id="projects" class="py-24 bg-dev-dark overflow-hidden">
-            <div class="container mx-auto px-6 mb-16 flex justify-between items-end">
+            <div class="container mx-auto px-6 mb-16 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                 <div>
                     <h2 class="text-xs font-mono text-dev-accent tracking-[0.3em] uppercase mb-4" data-i18n="projectsLabel">Selected Works</h2>
-                    <h3 class="text-4xl md:text-6xl font-bold text-white" data-i18n="projectsTitle">Featured Projects</h3>
+                    <h3 class="text-3xl md:text-6xl font-bold text-white" data-i18n="projectsTitle">Featured Projects</h3>
                 </div>
-                <!-- Manual Controls -->
                 <div class="hidden md:flex gap-4">
                      <button id="scroll-prev" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-dev-accent transition-all group">
                         <i data-lucide="arrow-left" class="w-6 h-6 text-white"></i>
@@ -240,12 +264,11 @@
                     
                     <!-- PROJECT 1 -->
                     <div class="project-card group relative overflow-hidden rounded-3xl bg-dev-card border border-white/5">
-                        <div class="h-80 overflow-hidden">
+                        <div class="h-64 md:h-80 overflow-hidden">
                             <img src="Screenshot 2026-01-24 163120.png" class="project-image w-full h-full object-cover transition-transform duration-700" alt="Booking Website">
                         </div>
-                        <div class="p-8">
-                            <h4 class="text-2xl font-bold mb-2">AI-Delivery</h4>
-                            <!-- EDIT PROJECT 1 DESCRIPTION BELOW (data-en and data-pt) -->
+                        <div class="p-6 md:p-8">
+                            <h4 class="text-xl md:text-2xl font-bold mb-2">AI-Delivery</h4>
                             <p class="proj-desc text-gray-400 text-sm mb-4" 
                                data-en="One-page delivery service site converting 80% of mobile visitors through direct WhatsApp booking flow" 
                                data-pt="Site de serviço de entrega de página única convertendo 80% dos visitantes móveis através de agendamento via WhatsApp">
@@ -259,37 +282,17 @@
 
                     <!-- PROJECT 2 -->
                     <div class="project-card group relative overflow-hidden rounded-3xl bg-dev-card border border-white/5">
-                        <div class="h-80 overflow-hidden">
+                        <div class="h-64 md:h-80 overflow-hidden">
                             <img src="Screenshot 2026-01-25 101909.png" class="project-image w-full h-full object-cover transition-transform duration-700" alt="Portfolio">
                         </div>
-                        <div class="p-8">
-                            <h4 class="text-2xl font-bold mb-2">Portofolio Website</h4>
-                            <!-- EDIT PROJECT 2 DESCRIPTION BELOW -->
+                        <div class="p-6 md:p-8">
+                            <h4 class="text-xl md:text-2xl font-bold mb-2">Portofolio Website</h4>
                             <p class="proj-desc text-gray-400 text-sm mb-4" 
                                data-en="Portfolio website Experience" 
                                data-pt="Experiência com site de portfólio">
                                 Minimalist Portofolio Experience
                             </p>
                             <a href="https://portofolio001.netlify.app/" target="_blank" class="inline-flex items-center gap-2 text-white font-semibold hover:text-dev-accent transition-colors">
-                                <span data-i18n="liveDemo">Live Demo</span> <i data-lucide="external-link" class="w-4 h-4"></i>
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- PROJECT 3 -->
-                    <div class="project-card group relative overflow-hidden rounded-3xl bg-dev-card border border-white/5">
-                        <div class="h-80 overflow-hidden">
-                            <img src="Screenshot 2026-01-25 102505.png" class="project-image w-full h-full object-cover transition-transform duration-700" alt="booking website">
-                        </div>
-                        <div class="p-8">
-                            <h4 class="text-2xl font-bold mb-2">Edge & Co. barbershop website</h4>
-                            <!-- EDIT PROJECT 3 DESCRIPTION BELOW -->
-                            <p class="proj-desc text-gray-400 text-sm mb-4" 
-                               data-en="Barbershop expo and booking website" 
-                               data-pt="Site de reservas e exposição de barbearias">
-                                Edge & Co barbershop website
-                            </p>
-                            <a href="https://edge01.netlify.app/" target="_blank" class="inline-flex items-center gap-2 text-white font-semibold hover:text-dev-accent transition-colors">
                                 <span data-i18n="liveDemo">Live Demo</span> <i data-lucide="external-link" class="w-4 h-4"></i>
                             </a>
                         </div>
@@ -303,18 +306,18 @@
     <!-- SERVICES PAGE VIEW -->
     <main id="services-view" class="page-view pt-32 pb-24">
         <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tighter text-white" data-i18n="servicesHero">Service Packages</h1>
-                <p class="text-gray-400 max-w-2xl mx-auto mb-8" data-i18n="servicesIntro">Fair prices matched to your local economy.</p>
-                <div class="flex justify-center items-center gap-4 bg-dev-card p-1 rounded-full w-fit mx-auto border border-white/10 mb-12">
-                    <button id="market-cy" class="px-6 py-2 rounded-full text-xs font-bold transition-all bg-dev-accent text-white">CYPRUS (EU)</button>
-                    <button id="market-mz" class="px-6 py-2 rounded-full text-xs font-bold transition-all text-gray-500 hover:text-white">MOZAMBIQUE</button>
+            <div class="text-center mb-12 px-4">
+                <h1 class="text-4xl md:text-7xl font-extrabold mb-6 tracking-tighter text-white" data-i18n="servicesHero">Service Packages</h1>
+                <p class="text-gray-400 max-w-2xl mx-auto mb-8 text-sm md:text-base" data-i18n="servicesIntro">Fair prices matched to your local economy.</p>
+                <div class="flex justify-center items-center gap-2 bg-dev-card p-1 rounded-full w-fit mx-auto border border-white/10 mb-12">
+                    <button id="market-cy" class="px-4 md:px-6 py-2 rounded-full text-[10px] md:text-xs font-bold transition-all bg-dev-accent text-white">CYPRUS (EU)</button>
+                    <button id="market-mz" class="px-4 md:px-6 py-2 rounded-full text-[10px] md:text-xs font-bold transition-all text-gray-500 hover:text-white uppercase">MOZAMBIQUE</button>
                 </div>
             </div>
 
-            <div id="pricing-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mb-24">
+            <div id="pricing-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch mb-24 max-w-6xl mx-auto">
                 <!-- Basic -->
-                <div onclick="openLeadModal('Basic/Starter')" class="p-8 rounded-3xl bg-dev-card border border-white/5 relative overflow-hidden group hover:border-dev-accent transition-colors cursor-pointer flex flex-col h-full">
+                <div onclick="openLeadModal('Basic/Starter')" class="p-6 md:p-8 rounded-3xl bg-dev-card border border-white/5 relative group hover:border-dev-accent transition-colors cursor-pointer flex flex-col h-full">
                     <div class="mb-6">
                         <h3 class="text-2xl font-bold mb-2 text-white" data-i18n="pkg1Name">Basic/Starter</h3>
                         <p class="text-sm text-gray-400" data-i18n="pkg1Goal">Perfect for small businesses getting online fast.</p>
@@ -327,7 +330,6 @@
                         <div class="text-[10px] font-mono text-gray-500 mt-2 uppercase tracking-widest"><span data-i18n="maintenanceLabel">Maintenance:</span> <span class="maint-val">€29</span>/mo</div>
                     </div>
                     <ul class="space-y-4 mb-8 text-sm text-gray-300 flex-grow" id="pkg1-features">
-                        <li class="flex items-start gap-3"><i data-lucide="check-circle" class="w-4 h-4 text-dev-neon"></i> <span id="pkg1-f1-text" data-i18n="pkg1F1">1-5 pages: Home, Services, Contact</span></li>
                         <li class="flex items-start gap-3"><i data-lucide="check-circle" class="w-4 h-4 text-dev-neon"></i> <span data-i18n="pkg1F2">Mobile-friendly (looks great on phones)</span></li>
                         <li class="flex items-start gap-3"><i data-lucide="check-circle" class="w-4 h-4 text-dev-neon"></i> <span data-i18n="pkg1F3">Easy contact form or WhatsApp link</span></li>
                     </ul>
@@ -335,7 +337,7 @@
                 </div>
 
                 <!-- Pro -->
-                <div onclick="openLeadModal('Standard/Pro')" class="p-8 rounded-3xl bg-dev-card border-2 border-dev-accent relative overflow-hidden group lg:scale-105 z-10 cursor-pointer flex flex-col h-full">
+                <div onclick="openLeadModal('Standard/Pro')" class="p-6 md:p-8 rounded-3xl bg-dev-card border-2 border-dev-accent relative group lg:scale-105 z-10 cursor-pointer flex flex-col h-full shadow-[0_0_50px_-15px_rgba(59,130,246,0.3)]">
                     <div class="absolute top-4 right-4 bg-dev-accent text-[10px] px-3 py-1 rounded-full font-bold text-white" data-i18n="mostPopular">MOST POPULAR</div>
                     <div class="mb-6">
                         <h3 class="text-2xl font-bold mb-2 text-white" data-i18n="pkg2Name">Standard/Pro</h3>
@@ -349,16 +351,14 @@
                         <div class="text-[10px] font-mono text-dev-accent mt-2 uppercase tracking-widest"><span data-i18n="maintenanceLabel">Maintenance:</span> <span class="maint-val">€49</span>/mo</div>
                     </div>
                     <ul class="space-y-4 mb-8 text-sm text-gray-300 flex-grow">
-                        <li class="flex items-start gap-3"><i data-lucide="zap" class="w-4 h-4 text-dev-accent"></i> <span data-i18n="pkg2F1">Everything in Basic + 1-5 pages</span></li>
                         <li class="flex items-start gap-3"><i data-lucide="zap" class="w-4 h-4 text-dev-accent"></i> <span data-i18n="pkg2F2">Fun animations (smooth scrolls)</span></li>
                         <li class="flex items-start gap-3"><i data-lucide="zap" class="w-4 h-4 text-dev-accent"></i> <span data-i18n="pkg2F3">Search engine boost (SEO)</span></li>
-                        <li class="flex items-start gap-3"><i data-lucide="image" class="w-4 h-4 text-dev-accent"></i> <span data-i18n="pkg2F4">Professional Gallery/Portfolio</span></li>
                     </ul>
                     <div class="pt-6 border-t border-white/10 text-xs font-mono text-dev-accent" data-i18n="pkg2Time">Ready in 7-21 days</div>
                 </div>
 
                 <!-- Premium -->
-                <div onclick="openLeadModal('Premium/Advanced')" class="p-8 rounded-3xl bg-dev-card border border-white/5 relative overflow-hidden group hover:border-dev-purple transition-colors cursor-pointer flex flex-col h-full">
+                <div onclick="openLeadModal('Premium/Advanced')" class="p-6 md:p-8 rounded-3xl bg-dev-card border border-white/5 relative group hover:border-dev-purple transition-colors cursor-pointer flex flex-col h-full">
                     <div class="mb-6">
                         <h3 class="text-2xl font-bold mb-2 text-white" data-i18n="pkg3Name">Premium/Advanced</h3>
                         <p class="text-sm text-gray-400" data-i18n="pkg3Goal">Full custom power for busy spots.</p>
@@ -368,12 +368,9 @@
                             <span class="text-sm font-mono text-dev-purple uppercase" data-i18n="fromText">From</span>
                             <div class="text-4xl font-extrabold price-val text-white" data-i18n="pkg3Price">Custom</div>
                         </div>
-                        <div class="text-[10px] font-mono text-dev-purple mt-2 uppercase tracking-widest"><span data-i18n="maintenanceLabel">Maintenance:</span> <span class="maint-val">Custom</span></div>
                     </div>
                     <ul class="space-y-4 mb-8 text-sm text-gray-300 flex-grow">
-                        <li class="flex items-start gap-3"><i data-lucide="crown" class="w-4 h-4 text-dev-purple"></i> <span data-i18n="pkg3F1">Unlimited pages & custom features</span></li>
                         <li class="flex items-start gap-3"><i data-lucide="crown" class="w-4 h-4 text-dev-purple"></i> <span data-i18n="pkg3F2">Booking calendar & payments</span></li>
-                        <li class="flex items-start gap-3"><i data-lucide="crown" class="w-4 h-4 text-dev-purple"></i> <span data-i18n="pkg3F3">Monthly tweaks (3 months free)</span></li>
                     </ul>
                     <div class="pt-6 border-t border-white/10 text-xs font-mono text-dev-purple" data-i18n="pkg3Time">Ready in 10-20+ days</div>
                 </div>
@@ -381,63 +378,34 @@
         </div>
     </main>
 
-    <!-- Global Contact & Footer Guarantee Section -->
+    <!-- Global Contact & Footer -->
     <footer id="contact" class="py-24 relative overflow-hidden bg-dev-black border-t border-white/5">
         <div class="container mx-auto px-6">
-            <!-- Free Consult Call -->
             <div class="mb-20 text-center">
-                <a href="https://wa.me/905338624614" target="_blank" class="inline-flex flex-col items-center group">
+                <a href="https://wa.me/905338624614" target="_blank" class="inline-flex flex-col items-center group px-4">
                     <div class="text-dev-accent text-xs font-mono uppercase tracking-widest mb-4" data-i18n="freeConsultLabel">Free Consult</div>
-                    <div class="text-3xl md:text-5xl font-bold text-white group-hover:text-dev-accent transition-colors flex items-center gap-4">
-                        <span data-i18n="freeConsultText">15min free - WhatsApp now!</span> <i data-lucide="external-link" class="w-8 h-8"></i>
+                    <div class="text-2xl md:text-5xl font-bold text-white group-hover:text-dev-accent transition-colors flex items-center gap-4">
+                        <span data-i18n="freeConsultText">15min free - WhatsApp now!</span> <i data-lucide="external-link" class="w-6 h-6 md:w-8 md:h-8"></i>
                     </div>
                 </a>
             </div>
 
-            <!-- Guarantee Badges -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-20 max-w-4xl mx-auto">
-                <div class="bg-dev-card/50 p-6 rounded-2xl border border-white/5 flex flex-col items-center text-center">
-                    <i data-lucide="award" class="w-6 h-6 text-dev-neon mb-3"></i>
-                    <span class="text-[10px] font-bold text-white leading-tight" data-i18n="footerG1">100% Satisfaction<br>Free Revisions</span>
-                </div>
-                <div class="bg-dev-card/50 p-6 rounded-2xl border border-white/5 flex flex-col items-center text-center">
-                    <i data-lucide="zap" class="w-6 h-6 text-dev-accent mb-3"></i>
-                    <span class="text-[10px] font-bold text-white leading-tight" data-i18n="footerG2">Sites live in 7 days<br>(Basic)</span>
-                </div>
-                <div class="bg-dev-card/50 p-6 rounded-2xl border border-white/5 flex flex-col items-center text-center">
-                    <i data-lucide="shield-check" class="w-6 h-6 text-dev-purple mb-3"></i>
-                    <span class="text-[10px] font-bold text-white leading-tight" data-i18n="footerG3">SSL Secure<br>Load < 2s</span>
-                </div>
-                <div class="bg-dev-card/50 p-6 rounded-2xl border border-white/5 flex flex-col items-center text-center">
-                    <i data-lucide="message-circle" class="w-6 h-6 text-dev-neon mb-3"></i>
-                    <span class="text-[10px] font-bold text-white leading-tight" data-i18n="footerG4">WhatsApp<br>Instant Support</span>
-                </div>
-            </div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
-                <div onclick="handleEmailClick()" class="p-8 bg-dev-card border border-white/5 rounded-3xl hover:border-dev-accent transition-all overflow-hidden flex flex-col items-center cursor-pointer group">
+                <div onclick="handleEmailClick()" class="p-8 bg-dev-card border border-white/5 rounded-3xl hover:border-dev-accent transition-all flex flex-col items-center cursor-pointer group text-center">
                     <i data-lucide="mail" class="w-8 h-8 mb-4 text-dev-accent group-hover:scale-110 transition-transform"></i>
-                    <span class="block text-sm font-bold text-white break-all w-full px-2 text-center">fastdeploy01@gmail.com</span>
+                    <span class="text-sm font-bold text-white break-all">fastdeploy01@gmail.com</span>
                 </div>
                 <a href="https://wa.me/905338624614" target="_blank" class="p-8 bg-dev-card border border-white/5 rounded-3xl hover:border-dev-neon transition-all flex flex-col items-center group">
                     <i data-lucide="message-circle" class="w-8 h-8 mb-4 text-dev-neon group-hover:scale-110 transition-transform"></i>
-                    <span class="block text-lg font-bold text-white">+90 533 8624614</span>
+                    <span class="text-lg font-bold text-white">+90 533 8624614</span>
                 </a>
                 <a href="https://www.linkedin.com/in/stelio-david-jr-524486356/" target="_blank" class="p-8 bg-dev-card border border-white/5 rounded-3xl hover:border-dev-purple transition-all flex flex-col items-center group">
                     <i data-lucide="linkedin" class="w-8 h-8 mb-4 text-dev-purple group-hover:scale-110 transition-transform"></i>
-                    <span class="block text-lg font-bold text-white">LinkedIn</span>
+                    <span class="text-lg font-bold text-white">LinkedIn</span>
                 </a>
             </div>
 
-            <!-- Tech Badges -->
-            <div class="flex flex-wrap justify-center gap-8 mb-12 opacity-30 grayscale hover:grayscale-0 transition-all duration-500">
-                <span class="font-mono text-xs text-white">NETLIFY</span>
-                <span class="font-mono text-xs text-white">GSAP</span>
-                <span class="font-mono text-xs text-white">HTML5</span>
-                <span class="font-mono text-xs text-white">TAILWIND</span>
-            </div>
-            
-            <div class="text-center text-gray-600 font-mono text-[10px]" data-i18n="footerTag">© 2026 FAST_DEPLOY // BUILT FOR SPEED | RELIABILITY | TRUST // 5+ WEBSITES LIVE </div>
+            <div class="text-center text-gray-600 font-mono text-[10px] uppercase leading-relaxed" data-i18n="footerTag">© 2026 FAST_DEPLOY // BUILT FOR SPEED | RELIABILITY | TRUST // 5+ WEBSITES LIVE </div>
         </div>
     </footer>
 
@@ -469,17 +437,11 @@
                 modalCta: 'Continue to WhatsApp',
                 freeConsultLabel: 'Free Consult',
                 freeConsultText: '15min free - WhatsApp now!',
-                footerG1: '100% Satisfaction\nFree Revisions',
-                footerG2: 'Sites live in 7 days\n(Basic)',
-                footerG3: 'SSL Secure\nLoad < 2s',
-                footerG4: 'WhatsApp\nInstant Support',
                 footerTag: '© 2026 FAST_DEPLOY // BUILT FOR SPEED | RELIABILITY | TRUST // 5+ WEBSITES LIVE',
                 pkg1F1_CY: '1-5+ pages: Home, Services, Gallery, Contact',
                 pkg1F1_MZ: '1-5+ pages: Home, Services, Contact',
-                pkg2F1: 'Everything in Basic + 1-5 pages',
                 pkg2F2: 'Fun animations (smooth scrolls)',
                 pkg2F3: 'Search engine boost (SEO)',
-                pkg2F4: 'Professional Gallery/Portfolio'
             },
             pt: {
                 navHome: 'INÍCIO', navServices: 'SERVIÇOS', navProjects: 'PROJETOS', navHire: 'CONTRATAR',
@@ -507,17 +469,11 @@
                 modalCta: 'Continuar para WhatsApp',
                 freeConsultLabel: 'Consultoria Grátis',
                 freeConsultText: '15min grátis - WhatsApp agora!',
-                footerG1: '100% Satisfação\nRevisões Grátis',
-                footerG2: 'Sites live em 7 dias\n(Basic)',
-                footerG3: 'SSL Seguro\nCarregamento < 2s',
-                footerG4: 'WhatsApp\nSuporte Instantâneo',
                 footerTag: '© 2026 FAST_DEPLOY // BUILT FOR SPEED | RELIABILITY | TRUST // 5+ WEBSITES LIVE',
                 pkg1F1_CY: '1-5+ páginas: Início, Serviços, Galeria, Contato',
                 pkg1F1_MZ: '1-5+ páginas: Início, Serviços, Contato',
-                pkg2F1: 'Tudo do Básico + 1-5+ páginas',
                 pkg2F2: 'Animações fluidas (smooth scrolls)',
                 pkg2F3: 'Otimização de busca (SEO)',
-                pkg2F4: 'Galeria/Portfólio Profissional'
             }
         };
 
@@ -537,18 +493,13 @@
         let selectedPackage = '';
 
         function updateUI() {
-            // Update standard i18n items
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (key === 'pkg1F1') {
-                    const featureKey = currentMarket === 'cy' ? 'pkg1F1_CY' : 'pkg1F1_MZ';
-                    el.innerText = translations[currentLang][featureKey];
-                } else if (translations[currentLang][key]) {
+                if (translations[currentLang][key]) {
                     el.innerText = translations[currentLang][key];
                 }
             });
 
-            // SIMPLIFIED PROJECT DESCRIPTION LOGIC
             document.querySelectorAll('.proj-desc').forEach(el => {
                 const enText = el.getAttribute('data-en');
                 const ptText = el.getAttribute('data-pt');
@@ -566,6 +517,13 @@
             window.scrollTo(0, 0);
             gsap.from(`#${pageId}-view`, { opacity: 0, y: 20, duration: 0.5 });
         }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobile-menu').classList.toggle('active');
+        }
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+        document.getElementById('mobile-menu-close').addEventListener('click', toggleMobileMenu);
 
         function openLeadModal(pkg) {
             selectedPackage = pkg;
@@ -623,9 +581,8 @@
             priceEls[1].innerText = prices[market].pro;
             priceEls[2].innerText = market === 'mz' ? customTxt : prices[market].premium;
             
-            maintEls[0].innerText = prices[market].basicMaint;
-            maintEls[1].innerText = prices[market].proMaint;
-            maintEls[2].innerText = customTxt;
+            if(maintEls[0]) maintEls[0].innerText = prices[market].basicMaint;
+            if(maintEls[1]) maintEls[1].innerText = prices[market].proMaint;
         }
 
         document.getElementById('lang-toggle').addEventListener('click', () => {
@@ -634,8 +591,6 @@
         });
 
         lucide.createIcons();
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', (e) => { gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 }); });
         
         function initProjectTicker() {
             const ticker = document.getElementById('project-ticker');
@@ -646,57 +601,37 @@
             ticker.innerHTML += ticker.innerHTML + ticker.innerHTML; 
             
             const tickerWidth = ticker.scrollWidth / 3;
-            let currentX = 0;
-            let isAutoPlaying = true;
-
             const autoMove = gsap.to(ticker, {
                 x: -tickerWidth,
                 duration: 40,
                 ease: "none",
                 repeat: -1,
-                onRepeat: () => { gsap.set(ticker, { x: 0 }); currentX = 0; }
+                onRepeat: () => { gsap.set(ticker, { x: 0 }); }
             });
 
-            const dragInstance = Draggable.create(ticker, {
+            Draggable.create(ticker, {
                 type: "x",
-                edgeResistance: 0.65,
                 bounds: { minX: -tickerWidth * 2, maxX: 0 },
                 inertia: true,
-                onPress: () => {
-                    autoMove.pause();
-                },
-                onRelease: () => {
-                    if (isAutoPlaying) autoMove.play();
-                },
-                onDrag: function() {
-                    currentX = this.x;
-                },
+                onPress: () => autoMove.pause(),
+                onRelease: () => autoMove.play(),
                 onThrowUpdate: function() {
-                    currentX = this.x;
-                    if (currentX <= -tickerWidth * 2) { 
-                        gsap.set(ticker, { x: currentX + tickerWidth });
+                    if (this.x <= -tickerWidth * 2) { 
+                        gsap.set(ticker, { x: this.x + tickerWidth });
                         this.update();
-                    } else if (currentX >= 0) {
-                        gsap.set(ticker, { x: currentX - tickerWidth });
+                    } else if (this.x >= 0) {
+                        gsap.set(ticker, { x: this.x - tickerWidth });
                         this.update();
                     }
                 }
-            })[0];
-
-            nextBtn.addEventListener('click', () => {
-                autoMove.pause();
-                isAutoPlaying = false;
-                gsap.to(ticker, { x: "-=482", duration: 0.5, ease: "power2.out", onUpdate: () => dragInstance.update() });
             });
 
-            prevBtn.addEventListener('click', () => {
-                autoMove.pause();
-                isAutoPlaying = false;
-                gsap.to(ticker, { x: "+=482", duration: 0.5, ease: "power2.out", onUpdate: () => dragInstance.update() });
+            nextBtn?.addEventListener('click', () => {
+                gsap.to(ticker, { x: "-=482", duration: 0.5 });
             });
-
-            container.addEventListener('mouseenter', () => autoMove.pause());
-            container.addEventListener('mouseleave', () => { if(isAutoPlaying) autoMove.play(); });
+            prevBtn?.addEventListener('click', () => {
+                gsap.to(ticker, { x: "+=482", duration: 0.5 });
+            });
         }
 
         window.onload = () => {
